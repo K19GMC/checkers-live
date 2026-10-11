@@ -1,5 +1,5 @@
 import { join, start, move, tick, view } from '../../../../lib/tournament.js';
-import { load, mutate } from '../../../../lib/store.js';
+import { load, mutate, beat, seenMap } from '../../../../lib/store.js';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req, { params }) {
@@ -7,8 +7,14 @@ export async function GET(req, { params }) {
   const token = new URL(req.url).searchParams.get('token') || '';
   let t = await load(pin);
   if (!t) return Response.json({ error: 'Game not found' }, { status: 404 });
-  if (tick(structuredClone(t))) { // something is due (timeout, round end): apply it under the lock
-    const r = await mutate(pin, t => { tick(t); });
+  let seen = null;
+  if (t.status === 'running') {
+    const me = Object.values(t.players).find(p => p.token === token);
+    if (me) await beat(pin, me.id);
+    seen = await seenMap(pin, t.matches.filter(m => !m.winner).flatMap(m => [m.white, m.black]));
+  }
+  if (tick(structuredClone(t), Date.now(), seen)) { // something is due (timeout, leaver, round end): apply under the lock
+    const r = await mutate(pin, t => { tick(t, Date.now(), seen); });
     if (r.t) t = r.t;
   }
   return Response.json(view(t, token));
