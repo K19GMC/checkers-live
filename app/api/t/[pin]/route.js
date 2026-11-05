@@ -1,4 +1,4 @@
-import { join, start, move, tick, view } from '../../../../lib/tournament.js';
+import { join, start, move, leave, emote, tick, view } from '../../../../lib/tournament.js';
 import { load, mutate, beat, seenMap } from '../../../../lib/store.js';
 export const dynamic = 'force-dynamic';
 
@@ -25,11 +25,14 @@ export async function POST(req, { params }) {
   const b = await req.json();
   const r = await mutate(pin, t => {
     const now = Date.now();
-    if (b.action === 'join') return join(t, b.nickname);
+    if (b.action === 'join') return join(t, b.nickname, b.avatar);
     if (b.action === 'start') return b.token === t.hostToken ? start(t, now) : { error: 'Only the host can start' };
-    if (b.action === 'move') {
+    if (['move', 'leave', 'emote'].includes(b.action)) {
       const p = Object.values(t.players).find(p => p.token === b.token);
-      return p ? move(t, p.id, b.from, b.to, now) : { error: 'Not a player' };
+      if (!p) return { error: 'Not a player' };
+      if (b.action === 'move') return move(t, p.id, b.from, b.to, now);
+      if (b.action === 'leave') return leave(t, p.id, now);
+      return emote(t, p.id, b.symbol, now);
     }
     return { error: 'Unknown action' };
   });
