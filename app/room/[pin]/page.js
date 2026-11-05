@@ -34,7 +34,14 @@ export default function Room() {
   const [actionErr, setActionErr] = useState('');
   const [busy, setBusy] = useState(false);
 
-  useEffect(() => { setToken(localStorage.getItem('host:' + pin) || localStorage.getItem('p:' + pin) || ''); }, [pin]);
+  // Per-tab tokens (sessionStorage) so a second tab on the same browser can be a
+  // different player; localStorage host:<pin> is shared by every tab and would
+  // otherwise make a joining tab resolve to the host token. localStorage is kept
+  // as a fallback for sessions created before this change.
+  useEffect(() => { setToken(
+    sessionStorage.getItem('host:' + pin) || sessionStorage.getItem('p:' + pin) ||
+    localStorage.getItem('p:' + pin) || localStorage.getItem('host:' + pin) || ''
+  ); }, [pin]);
   useEffect(() => {
     if (token === null) return;
     let stop = false;
@@ -79,6 +86,7 @@ export default function Room() {
   const move = (from, to) => act({ action: 'move', from, to });
   async function confirmLeave() {
     if (await act({ action: 'leave' })) {
+      sessionStorage.removeItem('p:' + pin);
       localStorage.removeItem('p:' + pin);
       router.push('/');
     }

@@ -17,7 +17,7 @@ export default function Home() {
     try {
       const d = await (await fetch('/api/t', { method: 'POST' })).json();
       if (d.error) return setErr(d.error);
-      localStorage.setItem('host:' + d.pin, d.hostToken);
+      sessionStorage.setItem('host:' + d.pin, d.hostToken);
       router.push('/room/' + d.pin);
     } catch { setErr('Could not create the game. Try again.'); }
     finally { setBusy(false); }
@@ -29,7 +29,7 @@ export default function Home() {
       const res = await fetch('/api/t/' + code, { method: 'POST', body: JSON.stringify({ action: 'join', nickname: name, avatar }) });
       const d = await res.json();
       if (d.error) return setErr(d.error);
-      localStorage.setItem('p:' + code, d.token);
+      sessionStorage.setItem('p:' + code, d.token);
       router.push('/room/' + code);
     } catch { setErr('Could not join the game. Try again.'); }
     finally { setBusy(false); }
