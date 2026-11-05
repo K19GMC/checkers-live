@@ -51,7 +51,7 @@ export default function Home() {
             {AVATARS.map(a => <button type="button" key={a.id} className={avatar === a.id ? 'selected' : ''} aria-label={`Choose ${a.name}`} aria-pressed={avatar === a.id} onClick={() => setAvatar(a.id)}><Avatar avatar={a.id} /></button>)}
           </div>
           <div className="avatar-actions">
-            <button type="button" className="camera-btn" onClick={() => setCameraOpen(true)}>📷 {usingPhoto ? 'Retake photo' : 'Use camera'}</button>
+            <button type="button" className="camera-btn" onClick={() => setCameraOpen(true)}>{usingPhoto ? 'Retake photo' : 'Use camera'}</button>
           </div>
         </fieldset>
         {err && <div className="err" role="alert">{err}</div>}
