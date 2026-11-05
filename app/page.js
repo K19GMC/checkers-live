@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Avatar from '../components/Avatar.js';
-import { AVATARS } from '../lib/social.js';
+import AvatarCamera from '../components/AvatarCamera.js';
+import { AVATARS, isPhotoAvatar } from '../lib/social.js';
 
 export default function Home() {
   const router = useRouter();
@@ -11,6 +12,8 @@ export default function Home() {
   const [avatar, setAvatar] = useState(AVATARS[0].id);
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
+  const [cameraOpen, setCameraOpen] = useState(false);
+  const usingPhoto = isPhotoAvatar(avatar);
 
   async function host() {
     setBusy(true); setErr('');
@@ -44,13 +47,18 @@ export default function Home() {
         <fieldset className="avatar-picker">
           <legend>Choose your avatar</legend>
           <div className="avatar-options">
+            {usingPhoto && <button type="button" className="selected" aria-label="Your camera photo" aria-pressed="true" onClick={() => setCameraOpen(true)}><Avatar avatar={avatar} /></button>}
             {AVATARS.map(a => <button type="button" key={a.id} className={avatar === a.id ? 'selected' : ''} aria-label={`Choose ${a.name}`} aria-pressed={avatar === a.id} onClick={() => setAvatar(a.id)}><Avatar avatar={a.id} /></button>)}
+          </div>
+          <div className="avatar-actions">
+            <button type="button" className="camera-btn" onClick={() => setCameraOpen(true)}>📷 {usingPhoto ? 'Retake photo' : 'Use camera'}</button>
           </div>
         </fieldset>
         {err && <div className="err" role="alert">{err}</div>}
         <button className="go" onClick={join} disabled={!pin.trim() || !name.trim() || busy}>{busy ? 'Please wait…' : 'Join game'}</button>
       </div>
       <button className="host" onClick={host} disabled={busy}>Host a new game</button>
+      {cameraOpen && <AvatarCamera onCapture={setAvatar} onClose={() => setCameraOpen(false)} />}
     </main>
   );
 }
