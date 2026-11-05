@@ -32,7 +32,7 @@ a { color:var(--gold); }
 .msg { font-size:1.6rem; padding:28px 12px; margin:0; }
 .msg span { display:block; font-size:1rem; margin-top:10px; opacity:.85; }
 .turn { font-size:1.2rem; margin:0; } .turn.mine { color:var(--gold); }
-.trophy { font-size:6rem; }
+.trophy { width:min(42vw,170px); height:auto; }
 .champion-avatar { width:84px; height:84px; font-size:3.4rem; }
 .home-link { background:var(--green); color:#fff; text-decoration:none; border-radius:8px; padding:14px 20px; width:100%; }
 .board-wrap { width:min(100%,520px); display:flex; flex-direction:column; gap:8px; }

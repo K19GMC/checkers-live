@@ -93,7 +93,7 @@ export default function Room() {
   }
 
   if (v.status === 'done') return (
-    <main className="c"><div className="trophy">🏆</div><Avatar avatar={player(v.champion)?.avatar} className="champion-avatar" /><h1>{nm(v.champion)}</h1><p>wins the tournament!</p>
+    <main className="c"><img className="trophy" src="/trophy.png" alt="" width="447" height="447" /><Avatar avatar={player(v.champion)?.avatar} className="champion-avatar" /><h1>{nm(v.champion)}</h1><p>wins the tournament!</p>
       {v.me === v.champion && <p>That's you. Well played!</p>}<Link className="home-link" href="/">Play again</Link></main>
   );
 
