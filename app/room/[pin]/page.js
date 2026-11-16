@@ -13,7 +13,7 @@ function PlayerBadge({ player, color, emote }) {
   return (
     <div className="player-badge">
       <div className="avatar-wrap">
-        <Avatar avatar={player?.avatar} />
+        <Avatar name={player?.nickname} avatar={player?.avatar} />
         {emote && <span className="emote-bubble" role="status" aria-label={`${player?.nickname} reacted ${emote}`}>{emote}</span>}
       </div>
       <div className="player-copy"><strong>{player?.nickname || 'Player'}</strong><span>{color}</span></div>
@@ -93,14 +93,14 @@ export default function Room() {
   }
 
   if (v.status === 'done') return (
-    <main className="c"><img className="trophy" src="/trophy.png" alt="" width="447" height="447" /><Avatar avatar={player(v.champion)?.avatar} className="champion-avatar" /><h1>{nm(v.champion)}</h1><p>wins the tournament!</p>
+    <main className="c"><img className="trophy" src="/trophy.png" alt="" width="447" height="447" /><Avatar name={nm(v.champion)} avatar={player(v.champion)?.avatar} className="champion-avatar" /><h1>{nm(v.champion)}</h1><p>wins the tournament!</p>
       {v.me === v.champion && <p>That's you. Well played!</p>}<Link className="home-link" href="/">Play again</Link></main>
   );
 
   if (v.status === 'lobby') return (
     <main className="c">
       <p>Join with this PIN</p><div className="pin">{pin}</div>
-      <div className="chips">{v.players.map(p => <span key={p.id} className="chip"><Avatar avatar={p.avatar} />{p.nickname}</span>)}</div>
+      <div className="chips">{v.players.map(p => <span key={p.id} className="chip"><Avatar name={p.nickname} avatar={p.avatar} />{p.nickname}</span>)}</div>
       {v.isHost
         ? <button className="go" disabled={v.players.length < 2} onClick={() => post(pin, { action: 'start', token })}>
             {v.players.length < 2 ? 'Waiting for players…' : `Start with ${v.players.length} players`}</button>

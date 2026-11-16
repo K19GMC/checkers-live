@@ -1,13 +1,14 @@
-import { avatarFor, isPhotoAvatar } from '../lib/social.js';
+import { blobatarUri } from 'blobatar/uri';
+import { isPhotoAvatar } from '../lib/social.js';
 
-export default function Avatar({ avatar, className = '' }) {
-  if (isPhotoAvatar(avatar)) {
-    return (
-      <span className={`avatar avatar-photo ${className}`.trim()}>
-        <img src={avatar} alt="Player avatar" />
-      </span>
-    );
-  }
-  const item = avatarFor(avatar);
-  return <span className={`avatar ${className}`.trim()} role="img" aria-label={`${item.name} avatar`}>{item.symbol}</span>;
+// The blobatar is a pure function of the nickname, so it renders the same on
+// the server and in every browser without storing an avatar id.
+export default function Avatar({ name = '', avatar, className = '' }) {
+  const label = String(name || '').trim() || 'Player';
+  const src = isPhotoAvatar(avatar) ? avatar : blobatarUri(label);
+  return (
+    <span className={`avatar avatar-photo ${className}`.trim()} role="img" aria-label={`${label} avatar`}>
+      <img src={src} alt="" />
+    </span>
+  );
 }

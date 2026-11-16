@@ -11,13 +11,13 @@ Built with Next.js 15, React 19, and Upstash Redis.
 - **Timed games** — 45 seconds per move, 6 minutes per round. Running out of time or leaving forfeits the game; a round timeout is a draw and both players advance.
 - **Watch the bracket** — the host sees every match, the featured board, and who is left.
 - **Emotes** — send a quick reaction to your opponent.
-- **Avatar picker** — choose a numbered avatar or take a photo with your device camera.
+- **Blobatar avatars** — every player gets a unique geometric avatar generated from their nickname, with an optional camera photo.
 - **Mobile friendly** — the board scales and flips for the red player.
 
 ## How to play
 
 1. Open the app and enter a nickname.
-2. Pick an avatar — a preset or a camera photo.
+2. Your avatar is generated from your nickname — or take a photo instead.
 3. Enter the game PIN and join, or host a new game to get a PIN.
 4. The host starts the tournament once at least two players have joined.
 5. Make your moves before the timer runs out. Win your match to advance.
@@ -90,12 +90,12 @@ app/
   api/t/[pin]/route.js    Poll state and submit actions
 components/
   Board.js                Checkers board and move selection
-  Avatar.js               Preset and photo avatars
+  Avatar.js               Blobatar and photo avatars
   AvatarCamera.js         Camera capture modal
 lib/
   checkers.js             Board, legal moves, and game rules
   tournament.js           Rounds, pairing, byes, and forfeits
-  social.js               Avatars and emotes
+  social.js               Avatar photos and emotes
   store.js                Redis / in-memory persistence
 scripts/
   package-standalone.mjs  Build the standalone distribution

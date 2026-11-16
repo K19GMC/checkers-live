@@ -3,17 +3,18 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Avatar from '../components/Avatar.js';
 import AvatarCamera from '../components/AvatarCamera.js';
-import { AVATARS, isPhotoAvatar } from '../lib/social.js';
+import { isPhotoAvatar } from '../lib/social.js';
 
 export default function Home() {
   const router = useRouter();
   const [pin, setPin] = useState('');
   const [name, setName] = useState('');
-  const [avatar, setAvatar] = useState(AVATARS[0].id);
+  const [avatar, setAvatar] = useState(null);
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
   const usingPhoto = isPhotoAvatar(avatar);
+  const displayName = name.trim();
 
   async function host() {
     setBusy(true); setErr('');
@@ -45,13 +46,12 @@ export default function Home() {
         <input inputMode="numeric" placeholder="Game PIN" value={pin} onChange={e => setPin(e.target.value)} aria-label="Game PIN" />
         <input placeholder="Nickname" maxLength={16} value={name} onChange={e => setName(e.target.value)} aria-label="Nickname" />
         <fieldset className="avatar-picker">
-          <legend>Choose your avatar</legend>
-          <div className="avatar-options">
-            {usingPhoto && <button type="button" className="selected" aria-label="Your camera photo" aria-pressed="true" onClick={() => setCameraOpen(true)}><Avatar avatar={avatar} /></button>}
-            {AVATARS.map(a => <button type="button" key={a.id} className={avatar === a.id ? 'selected' : ''} aria-label={`Choose ${a.name}`} aria-pressed={avatar === a.id} onClick={() => setAvatar(a.id)}><Avatar avatar={a.id} /></button>)}
-          </div>
+          <legend>Your avatar</legend>
+          <div className="avatar-preview"><Avatar name={displayName} avatar={avatar} /></div>
+          <p className="avatar-note">{usingPhoto ? 'Your camera photo' : `Generated from “${displayName || 'Player'}”`}</p>
           <div className="avatar-actions">
             <button type="button" className="camera-btn" onClick={() => setCameraOpen(true)}>{usingPhoto ? 'Retake photo' : 'Use camera'}</button>
+            {usingPhoto && <button type="button" className="camera-btn" onClick={() => setAvatar(null)}>Use my name</button>}
           </div>
         </fieldset>
         {err && <div className="err" role="alert">{err}</div>}
