@@ -27,7 +27,7 @@ Built with Next.js 15, React 19, and Upstash Redis.
 | Layer | Choice |
 | --- | --- |
 | Framework | Next.js 15 (App Router) |
-| UI | React 19, Tailwind CSS v4, shadcn/ui + Kokonut UI (`@kokonutui` registry) |
+| UI | React 19, plain CSS |
 | Storage | Upstash Redis (in-memory fallback for local dev) |
 | Runtime | Node.js 20 |
 | Packaging | Docker / Next.js standalone output |
