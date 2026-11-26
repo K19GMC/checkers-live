@@ -6,6 +6,10 @@
 :root {
   color-scheme: dark;
 
+  --font-display: "Funnel Display", "Funnel Display Fallback", system-ui, sans-serif;
+  --font-text: "Funnel Sans", "Funnel Sans Fallback", system-ui, sans-serif;
+  --font-mono: "DM Mono", "DM Mono Fallback", ui-monospace, Menlo, Consolas, monospace;
+
   --bg: #0f1f10;
   --bg-deep: #0a160c;
   --surface: #162a17;
