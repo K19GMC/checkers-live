@@ -6,3 +6,6 @@ node_modules
 .vercel
 
 dist
+
+# local design-skill working state (screenshots, deal history)
+.taste-skill

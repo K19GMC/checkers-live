@@ -98,11 +98,11 @@ export default function AvatarCamera({ onCapture, onClose }) {
         <div className="camera-actions">
           {!error && (shot
             ? <>
-                <button type="button" className="go" onClick={usePhoto}>Use this photo</button>
-                <button type="button" className="camera-secondary" onClick={() => setShot(null)}>Retake</button>
+                <button type="button" className="btn btn--primary" onClick={usePhoto}>Use this photo</button>
+                <button type="button" className="btn btn--ghost" onClick={() => setShot(null)}>Retake</button>
               </>
-            : <button type="button" className="go" onClick={capture} disabled={!ready}>Take photo</button>)}
-          <button type="button" className="camera-secondary" onClick={onClose}>{error ? 'Close' : 'Cancel'}</button>
+            : <button type="button" className="btn btn--primary" onClick={capture} disabled={!ready}>Take photo</button>)}
+          <button type="button" className="btn btn--ghost" onClick={onClose}>{error ? 'Close' : 'Cancel'}</button>
         </div>
       </div>
     </div>
